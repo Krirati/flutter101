@@ -13,7 +13,7 @@ class _OnboardingBodyState extends State<OnboardingBody> {
   int currentPage = 0;
   String buttonTxt = "ข้าม";
   final PageController _pageController = PageController(initialPage: 0);
-  List<Map<String, String>> contenttData = [
+  List<Map<String, String>> contentData = [
     {
       "text": "คุณกำลังเบื่ออยู่ใช่ไหม ?",
       "subtext": "ในวันว่างๆ ที่คุณไม่รู้จะทำอะไร",
@@ -61,12 +61,12 @@ class _OnboardingBodyState extends State<OnboardingBody> {
                       }
                     });
                   },
-                  itemCount: contenttData.length,
+                  itemCount: contentData.length,
                   controller: _pageController,
                   itemBuilder: (context, index) => Content(
-                        text: contenttData[index]["text"],
-                        subtext: contenttData[index]["subtext"],
-                        image: contenttData[index]["image"],
+                        text: contentData[index]["text"],
+                        subtext: contentData[index]["subtext"],
+                        image: contentData[index]["image"],
                       )),
             ),
             Expanded(
@@ -78,7 +78,7 @@ class _OnboardingBodyState extends State<OnboardingBody> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
-                        contenttData.length,
+                        contentData.length,
                         (index) => buildDot(index: index)
                       )
                     ),

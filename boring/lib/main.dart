@@ -10,7 +10,9 @@ void main() {
     home: Scaffold(
       backgroundColor: kBackgroundColor,
       body: SafeArea(
-        child: MyApp(),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child:  MyApp(),)
       )
     ) 
   ));

@@ -8,7 +8,7 @@ class Content extends StatelessWidget {
   final String text, subtext, image;
 
   @override
-  Widget build(BuildContext) {
+  Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         Padding(padding: EdgeInsets.only(top: 10.0)),
