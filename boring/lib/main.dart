@@ -2,6 +2,7 @@ import 'package:boring/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:boring/splash_screen.dart';
 
+
 void main() {
   runApp( MaterialApp(
     theme: ThemeData(

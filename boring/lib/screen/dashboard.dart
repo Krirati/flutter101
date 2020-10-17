@@ -1,7 +1,9 @@
 import 'package:boring/constants.dart';
-import 'package:boring/screen/chip_number.dart';
+import 'package:boring/screen/dialog_result.dart';
 import 'package:flutter/material.dart';
-import 'package:scroll_snap_list/scroll_snap_list.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
+import 'package:shake/shake.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -12,11 +14,17 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
+     ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: () {
+      // Do stuff on phone shake
+      randomEvent();
+    });
   }
 
+  var url = "http://www.boredapi.com/api/activity?participants=";
   int currentPage = 0;
-  int _focusedIndex = 0;
-  final PageController _pageController = PageController(initialPage: 0);
+  String header = "";
+  String subHeader = "";
+  String image = "";
   List<Map<String, String>> numberData = [
     {
       "count": "1",
@@ -34,30 +42,55 @@ class _DashboardState extends State<Dashboard> {
       "count": "5",
     },
   ];
+  randomEvent() async {
+    var res = await http.get(url + (currentPage + 1).toString());
+    if (res.statusCode == 200) {
+      var jsonResponse = convert.jsonDecode(res.body);
+      var itemHeader = jsonResponse['activity'];
+      var type = jsonResponse['type'];
+      var nameImage = "";
+      print(jsonResponse);
+      switch (type) {
+        // "education", "recreational", "social", "diy", "charity", "cooking", "relaxation", "music", "busywork"
+        case 'education':
+          nameImage = 'assets/images/gummy-experiment-lab.png';
+          break;
+        case 'recreational':
+          nameImage = 'assets/images/gummy-app-development.png';
+          break;
+        case 'social':
+          nameImage = 'assets/images/gummy-work-from-home.png';
+          break;
+        case 'diy':
+          nameImage = 'assets/images/gummy-designer-tools.png';
+          break;
+        case 'charity':
+          nameImage = 'assets/images/gummy-no-hand-shake.png';
+          break;
+        case 'cooking':
+          nameImage = 'assets/images/gummy-kitchen.png';
+          break;
+        case 'relaxation':
+          nameImage = 'assets/images/gummy-camping.png';
+          break;
+        case 'busywork':
+          nameImage = 'assets/images/gummy-ux-slash-ui-design.png';
+          break;
+        default:
+          nameImage = 'assets/images/gummy-ipod.png';
+      }
+      setState(() {
+        header = itemHeader;
+        image = nameImage;
+        subHeader = type;
+      });
+    } else {
+      print('Request failed with status: ${res.statusCode}.');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // AnimatedContainer chipNumber({int index}) {
-    //   return AnimatedContainer(
-    //     duration: kAnimationDuration,
-    //     margin: EdgeInsets.only(right: 5, bottom: 40),
-    //     height: 40,
-    //     width: 40,
-    //     decoration: BoxDecoration(
-    //         color: currentPage == index ? kActiveShadowColor : kShadowColor,
-    //         borderRadius: BorderRadius.circular(5)
-    //     ),
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       children: <Widget>[
-    //         Text(
-    //           "$index",
-    //           style: kTitleTextstyle,
-    //         )
-    //       ]
-    //     ),
-    //   );
-    // }
-
     return Scaffold(
       backgroundColor: kBackgroundColor,
       body: SafeArea(
@@ -87,7 +120,7 @@ class _DashboardState extends State<Dashboard> {
               ),
               Image.asset(
                 'assets/images/waiting.png',
-                height: 350,
+                height: 250,
               ),
               SizedBox(
                 height: 100, // card height
@@ -101,7 +134,8 @@ class _DashboardState extends State<Dashboard> {
                       scale: i == currentPage ? 1 : 0.9,
                       child: Card(
                         elevation: 6,
-                        color: i == currentPage ? kPrimaryColor: kBackgroundColor,
+                        color:
+                            i == currentPage ? kRecovercolor : kBackgroundColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
                         child: Center(
@@ -110,11 +144,13 @@ class _DashboardState extends State<Dashboard> {
                           child: Column(children: <Widget>[
                             Text(
                               "${numberData[i]["count"]}",
-                              style: TextStyle(fontSize: 25,color: i == currentPage ? Colors.grey[50]: Colors.black),
+                              style:
+                                  TextStyle(fontSize: 25, color: Colors.black),
                             ),
                             Text(
                               "คน",
-                              style: TextStyle(fontSize: 22,color: i == currentPage ? Colors.grey[50]: Colors.black),
+                              style:
+                                  TextStyle(fontSize: 22, color: Colors.black),
                             ),
                           ]),
                         )),
@@ -131,7 +167,18 @@ class _DashboardState extends State<Dashboard> {
                       color: kPrimaryColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
-                      onPressed: () {},
+                      onPressed: () async {
+                        await randomEvent();
+                        await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return DialogResult(
+                                header: header,
+                                subHeader: subHeader,
+                                image: image,
+                              );
+                            });
+                      },
                       child: Text(
                         "เขย่าเลย",
                         style: kButtonStyle,
