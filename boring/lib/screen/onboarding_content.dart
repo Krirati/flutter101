@@ -14,7 +14,7 @@ class Content extends StatelessWidget {
         Padding(padding: EdgeInsets.only(top: 10.0)),
         Image.asset(
           image,
-          height: 350,
+          height: 250,
         ),
         Padding(padding: EdgeInsets.only(top: 10.0)),
         Text(
