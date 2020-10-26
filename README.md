@@ -1,11 +1,13 @@
 # boring
 
 A new Flutter project.
-![Image of Demo1](assets/images/demo1.png){:height="50%" width="50%"}
-![Image of Demo2](assets/images/demo2.png){:height="50%" width="50%"}
-![Image of Demo3](assets/images/demo3.png){:height="50%" width="50%"}
-![Image of Demo4](assets/images/demo4.png){:height="50%" width="50%"}
-![Image of Demo5](assets/images/demo5.png){:height="50%" width="50%"}
+<div>
+  <img src="assets/images/demo1.png" width="320" height="692.56"/>
+  <img src="assets/images/demo2.png" width="320" height="692.56"/>
+  <img src="assets/images/demo3.png" width="320" height="692.56"/>
+  <img src="assets/images/demo4.png" width="320" height="692.56"/>
+  <img src="assets/images/demo5.png" width="320" height="692.56"/>
+</div>
 
 ## Getting Started
 
